@@ -1,25 +1,27 @@
-# Use official Java 17 image
+# Use Java 17 (Render compatible)
 FROM eclipse-temurin:17-jdk-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy Maven build files
-COPY pom.xml .
+# Copy maven wrapper files first
 COPY mvnw .
 COPY .mvn .mvn
+COPY pom.xml .
 
-# Download dependencies
+# 🔥 FIX: give execute permission to mvnw
+RUN chmod +x mvnw
+
+# Download dependencies (cached layer)
 RUN ./mvnw dependency:go-offline
 
 # Copy source code
 COPY src src
 
-# Build the application
+# Build application
 RUN ./mvnw clean package -DskipTests
 
 # Expose Spring Boot port
 EXPOSE 8080
 
-# Run the app
+# Run app
 CMD ["java", "-jar", "target/*.jar"]
