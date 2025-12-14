@@ -58,7 +58,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // React dev server
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedOrigins(List.of("https://sweet-shop-frontend-beta.vercel.app/"));
 
         config.setAllowedMethods(List.of(
                 "GET",
